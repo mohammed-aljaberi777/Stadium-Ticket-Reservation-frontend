@@ -49,6 +49,8 @@ export const api = {
   listMatches: () => request("GET", "/v1/matches"),
   getMatch: (id) => request("GET", `/v1/matches/${id}`),
   getSections: (matchId) => request("GET", `/v1/matches/${matchId}/sections`),
+  getSeats: (matchId, sectionId) =>
+    request("GET", `/v1/matches/${matchId}/seats?section_id=${sectionId}&limit=50`),
 
   // --- Holds + Bookings + Tickets ---
   createHold: (matchId, match_seat_ids) =>
@@ -59,6 +61,22 @@ export const api = {
     request("POST", "/v1/bookings", { hold_id }, { auth: true }),
   myTickets: () => request("GET", "/v1/tickets/me", undefined, { auth: true }),
   ticketQrUrl: (ticketId) => `${BASE_URL}/v1/tickets/${ticketId}/qr`,
+
+  // --- Gate scanner ---
+  verify: (qr_token) =>
+    request("POST", "/v1/verify", { qr_token }, { auth: true }),
+
+  // --- Admin ---
+  createTeam: (body) =>
+    request("POST", "/v1/admin/teams", body, { auth: true }),
+  listAdminTeams: () =>
+    request("GET", "/v1/admin/teams", undefined, { auth: true }),
+  createStadium: (body) =>
+    request("POST", "/v1/admin/stadiums", body, { auth: true }),
+  listAdminStadiums: () =>
+    request("GET", "/v1/admin/stadiums", undefined, { auth: true }),
+  createMatch: (body) =>
+    request("POST", "/v1/admin/matches", body, { auth: true }),
 };
 
 export { BASE_URL };
